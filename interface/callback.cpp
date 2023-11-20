@@ -15,6 +15,7 @@ extern RC rc;
 extern uint8_t rx_buff_[100];
 extern uint8_t flagg;
 extern DMA_HandleTypeDef hdma_usart3_rx;
+int rx_cnt = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == TIM6) {
@@ -44,17 +45,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 //    }
 //  }
 //}
+//
+//void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart,uint16_t Size){
+//  if (huart->Instance == USART3){
+//   // if (Size > RC_FRAME_LEN){
+//	rc.rx_len_ = Size;
+//        rx_cnt++;
+//        HAL_GPIO_WritePin(LED_R_GPIO_Port,LED_R_Pin,GPIO_PIN_SET);
+//        rc.connect_.refresh();
+//        memcpy(rc.rx_data_, rx_buff_, rc.rx_len_);
+//        HAL_UARTEx_ReceiveToIdle_DMA(&huart3,rx_buff_,100);
+//   // }
+//
+//  }
+//}
 
-void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart,uint16_t Size){
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   if (huart->Instance == USART3){
-   // if (Size > RC_FRAME_LEN){
-	rc.rx_len_ = sizeof(rx_buff_) - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
-        HAL_GPIO_WritePin(LED_R_GPIO_Port,LED_R_Pin,GPIO_PIN_SET);
+  //HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_1);
         rc.connect_.refresh();
-        memcpy(rc.rx_data_, rx_buff_, rc.rx_len_);
-        memset(rx_buff_, 0, rc.rx_len_);
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart3,rx_buff_,sizeof(rx_buff_));
-   // }
-
+        rx_cnt++;
+        memcpy(rc.rx_data_, rx_buff_, 18);
+        HAL_UART_Receive_IT(huart,rx_buff_,18);
   }
 }
