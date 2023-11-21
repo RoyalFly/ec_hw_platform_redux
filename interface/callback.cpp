@@ -4,10 +4,10 @@
 
 #include "../base/Remote/Remote.h"
 #include "robot.h"
-#include "main.h"
 #include <cstring>
+#include "../base/motor/motor.h"
 //#include "stm32f407xx.h"
-//#include "stm32f4xx_hal_uart.h"
+#include "stm32f4xx_hal_can.h"
 //#include "stm32f4xx_it.h"
 //#include "..\hardware_config.h"
 
@@ -67,5 +67,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
         rx_cnt++;
         memcpy(rc.rx_data_, rx_buff_, 18);
         HAL_UART_Receive_IT(huart,rx_buff_,18);
+  }
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+  CAN_RxHeaderTypeDef rx_header;
+  uint8_t data[8];
+  HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, data);
+
+  if (rx_header.StdId >= 0x201 && rx_header.StdId <= 0x20b){
+
   }
 }
