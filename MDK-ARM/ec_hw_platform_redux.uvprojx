@@ -330,7 +330,7 @@
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
-            <v6LangP>5</v6LangP>
+            <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -603,6 +603,31 @@
               <FileName>Remote.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\base\Remote\Remote.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>filter.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\base\common\filter.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>math.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\base\common\math.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>pid.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\base\common\pid.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Dji_Motor_Driver.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\base\motor\Driver\Dji_Motor_Driver.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>motor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\base\motor\motor.cpp</FilePath>
             </File>
           </Files>
         </Group>
