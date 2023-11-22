@@ -44,7 +44,6 @@ float rpm2dps(const float& w);
 float dps2rpm(const float& w);
 float radps2dps(const float& w);
 float dps2radps(const float& w);
-float dps2rpm(const float& w);
 
 // Angle normalization(rad->[-PI,PI], deg->[-180,180])
 // 角度规范化(rad->[-PI,PI], deg->[-180,180])
