@@ -6,16 +6,45 @@
 #include "robot.h"
 #include <cstring>
 #include "../base/motor/motor.h"
-//#include "stm32f407xx.h"
 #include "stm32f4xx_hal_can.h"
-//#include "stm32f4xx_it.h"
-//#include "..\hardware_config.h"
+#include "..\base\motor\Driver\Dji_Motor_Driver.h"
 
 extern RC rc;
 extern uint8_t rx_buff_[100];
 extern uint8_t flagg;
-extern DMA_HandleTypeDef hdma_usart3_rx;
 int rx_cnt = 0;
+
+const PID chassis_wheel_spid(40, 1, 10, 1000, 16384);
+Motor User_Motor(Motor::M3508, 3591.f / 187.f, Motor::SPEED,  // type, ratio, method
+           PID(), PID(chassis_wheel_spid));             // ppid, spid
+
+Motor* can1_dji_motor[11] = {
+    &User_Motor,    // id:1
+    nullptr,    // id:2
+    nullptr,    // id:3
+    nullptr,    // id:4
+    nullptr,  // id:5
+    nullptr,  // id:6
+    nullptr,  // id:7
+    nullptr,  // id:8
+    nullptr,  // id:9
+    nullptr,  // id:10
+    nullptr   // id:11
+};
+Motor* can2_dji_motor[11] = {
+    nullptr,  // id:1
+    nullptr,     // id:2
+    nullptr,     // id:3
+    nullptr,     // id:4
+    nullptr,  // id:5
+    nullptr,  // id:6
+    nullptr,  // id:7
+    nullptr,  // id:8
+    nullptr,  // id:9
+    nullptr,  // id:10
+    nullptr   // id:11
+};
+DJIMotorDriver dji_motor_driver(can1_dji_motor, can2_dji_motor);
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == TIM6) {
@@ -75,7 +104,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
   uint8_t data[8];
   HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, data);
 
-  if (rx_header.StdId >= 0x201 && rx_header.StdId <= 0x20b){
-
+  if (dji_motor_driver.canRxMsgCheck(hcan, rx_header)){
+    dji_motor_driver.canRxMsgCallback(hcan, rx_header, data);
   }
 }
