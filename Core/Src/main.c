@@ -99,7 +99,7 @@ int main(void)
   MX_USART6_UART_Init();
   MX_ADC3_Init();
   MX_CAN1_Init();
-  //MX_IWDG_Init();
+  MX_IWDG_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
   MX_TIM4_Init();
@@ -108,8 +108,10 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM6_Init();
   MX_TIM7_Init();
+  MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UARTEx_ReceiveToIdle_DMA(&huart3,rx_buff_,sizeof(rx_buff_));
+//  HAL_UARTEx_ReceiveToIdle_DMA(&huart3,rx_buff_,sizeof(rx_buff_));
+  HAL_UART_Receive_IT(&huart3,rx_buff_,18);
   HAL_TIM_Base_Start_IT(&htim6);
   /* USER CODE END 2 */
 
